@@ -7,6 +7,7 @@ import { motion, Variants } from "framer-motion";
 import { Palette, Code2, Cpu, Rocket, Target, ShieldCheck, Wrench, ArrowRight, ArrowDown } from "lucide-react";
 import ContactModal from "@/components/ContactModal";
 import { useState } from "react";
+import Image from "next/image";
 export default function HomePage() {
 
   const [contactOpen, setContactOpen] = useState<boolean>(false);
@@ -40,7 +41,7 @@ export default function HomePage() {
     <main className="min-h-screen bg-grid bg-[#0b0f17] text-white">
 
       <div id="top" />
-      <Header onClickContactOpen={onClickContactOpen}/>
+      <Header onClickContactOpen={onClickContactOpen} />
 
       <MainVideoHero heightClassName="h-screen" />
 
@@ -96,7 +97,7 @@ export default function HomePage() {
               viewport={{ once: true, amount: 0.4 }}
               className="max-w-3xl"
             >
-             
+
               <h3 className="mt-3 text-3xl font-bold tracking-tight md:text-5xl mt-10">
                 우리가 해드리는 일
               </h3>
@@ -184,7 +185,7 @@ export default function HomePage() {
               viewport={{ once: true, amount: 0.4 }}
               className="max-w-3xl"
             >
-              
+
               <h3 className="mt-3 text-3xl font-bold tracking-tight md:text-5xl mt-10">
                 왜 인투더인가
               </h3>
@@ -278,12 +279,12 @@ export default function HomePage() {
                   “지금 필요한 기능”부터 잡고, <span className="text-white font-semibold">빠르게 결과</span>로 보여드릴게요.
                 </p>
                 <button
-                type="button"
-                onClick={openContact}
-                className="btn btn-primary w-full md:w-auto"
-              >
-                프로젝트 문의하기
-              </button>
+                  type="button"
+                  onClick={openContact}
+                  className="btn btn-primary w-full md:w-auto"
+                >
+                  프로젝트 문의하기
+                </button>
                 {/* <a className="btn btn-primary w-full md:w-auto" href="#contact">
                   프로젝트 문의
                 </a> */}
@@ -360,12 +361,10 @@ export default function HomePage() {
               className="flex items-end justify-between gap-4"
             >
               <div>
-                <h3 className="text-2xl font-semibold tracking-tight md:text-3xl">
+                <h3 className="text-2xl font-semibold tracking-tight md:text-3xl mt-10">
                   프로젝트
                 </h3>
-                
               </div>
-              
             </motion.div>
 
             <motion.div
@@ -373,31 +372,55 @@ export default function HomePage() {
               initial="hidden"
               whileInView="show"
               viewport={{ once: true, amount: 0.25 }}
-              className="mt-10 grid gap-4 md:grid-cols-3"
+              className="mt-10 grid gap-4 md:grid-cols-3 mb-10"
             >
               {[
-                { title: "프로젝트 A", desc: "웹 서비스 구축" },
-                { title: "프로젝트 B", desc: "앱 + API 연동" },
-                { title: "프로젝트 C", desc: "관리자 시스템" },
+                {
+                  title: "SY컨설팅",
+                  desc: "웹 서비스 구축",
+                  src: "/images/portfolio1.png",
+                  tags: ["Web"],
+                },
+                {
+                  title: "한국클린쿱",
+                  desc: "웹 서비스 구축",
+                  src: "/images/portfolio2.png",
+                  tags: ["Web"],
+                },
               ].map((p) => (
                 <motion.article
                   key={p.title}
                   variants={fadeUp}
-                  className={hoverCard + " overflow-hidden"}
+                  className={hoverCard + " overflow-hidden group"}
                 >
-                  {/* 이미지 자리표시 */}
-                  <div className="relative aspect-video bg-white/[0.03]">
-                    <div className="absolute inset-0 animate-pulse bg-gradient-to-r from-white/[0.03] via-white/[0.06] to-white/[0.03]" />
-                    <div className="absolute inset-0 grid place-items-center text-xs text-white/40">
-                      IMAGE
-                    </div>
+                  {/* ✅ 실제 이미지 */}
+                  <div className="relative aspect-video bg-white/[0.03] overflow-hidden">
+                    {p.src ? (
+                      <>
+                        <Image
+                          src={p.src}
+                          alt={p.title}
+                          fill
+                          sizes="(min-width: 768px) 33vw, 100vw"
+                          className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+                          priority={false}
+                        />
+                        {/* 살짝 어둡게 + 그라데이션(텍스트 가독성) */}
+                        <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent" />
+                      </>
+                    ) : (
+                      <div className="absolute inset-0 grid place-items-center text-xs text-white/40">
+                        NO IMAGE
+                      </div>
+                    )}
                   </div>
 
                   <div className="p-6">
                     <h4 className="text-base font-semibold">{p.title}</h4>
                     <p className="mt-2 text-sm text-white/60">{p.desc}</p>
+
                     <div className="mt-4 flex flex-wrap gap-2">
-                      {["Web", "App"].map((t) => (
+                      {p.tags.map((t) => (
                         <span
                           key={t}
                           className="rounded-full border border-white/10 bg-white/[0.03] px-2.5 py-1 text-xs text-white/70"
@@ -414,13 +437,13 @@ export default function HomePage() {
         </section>
 
         {/* 6) CONTACT CTA */}
-        
+
       </section>
 
       {/* 여기까지 메인 */}
       <ContactModal open={contactOpen} onClose={closeContact} />
       {/* Footer */}
-     <Footer/>
+      <Footer />
     </main>
   );
 }
